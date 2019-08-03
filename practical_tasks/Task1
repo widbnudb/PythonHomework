@@ -1,0 +1,86 @@
+string = input ("Enter your string: ")
+def stringReplace1(string):
+    for index, symbol in enumerate(string):
+        if symbol == "'":
+            string = string[:index] + '"' + string[index+1:]
+        elif symbol == '"':
+            string = string[:index] + "'" + string[index+1:]
+        else: continue
+    return string
+
+def stringReplace2(string):
+    return (string.translate(string.maketrans({"'": '"', '"':"'"})))
+
+def isPalindrom(string):
+    if string == string[::-1]:
+        print ("Yes, it is palindrom")
+    else: print("No, it isn't")
+
+def mySplit(string, sym, num):
+    l = []
+    flag = 0
+    for index, symbol in enumerate(string):
+        if symbol == sym:
+            l.append(string[:index-flag])
+            string = string[index-flag+1:]
+            num-=1
+            flag = index+1
+            if num == 0:
+                l.append(string)
+                return l
+    return l
+
+def splitByIndex(string, indexes):
+    words = []
+    indexes.sort()
+    ind = 0
+    for index,symb in enumerate(string):
+        if index == indexes[ind]:
+            if not words:
+                words.append(string[:index])
+            else:
+                words.append(string[indexes[ind-1]:index])
+            ind+=1
+            if ind == len(indexes):
+                words.append(string[index:])
+                return words
+    if indexes:
+        if not words:
+            words.append(string)
+        else:
+            words.append(string[indexes[ind - 1]:])
+    return words
+
+def getDigits(num: int):
+    t = tuple(i for i in str(num))
+    return t
+
+def getShortestWord(string):
+    return min(string.split(' '))
+
+def sumWithoutCurrent(listOfNum:list):
+    result = []
+    for item in listOfNum:
+        result.append(sum(listOfNum)-item)
+    return result
+
+def getPairs(listOfElements:list):
+    result = []
+    for index, item in enumerate(listOfElements):
+        if index == len(listOfElements)-1:
+            if not result:
+                return None
+            else:
+                return result
+        result.append((listOfElements[index], listOfElements[index+1]))
+    return
+
+#isPalindrom(string)
+#print(string[0:5:2])
+#print(mySplit(string, " ", 2))
+#print (stringReplace(string))
+#print(splitByIndex(string, [2,4]))
+#print (getDigits(24568))
+#print(getShortestWord(string))
+#print (sumWithoutCurrent([2,4,5,10]))
+#print(getPairs(['fff', 'kmfk', 'lkd', 'r8', 45]))
