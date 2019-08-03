@@ -1,5 +1,5 @@
 string = input ("Enter your string: ")
-def stringReplace1(string):
+def string_replace_1(string):
     for index, symbol in enumerate(string):
         if symbol == "'":
             string = string[:index] + '"' + string[index+1:]
