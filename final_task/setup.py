@@ -13,10 +13,10 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/widbnudb/PythonHomework",
-    packages=['pycalc'],
+    packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'pycalc = pycalc.pycalc'
+            'pycalc = pycalc.pycalc:main'
         ]},
     classifiers=[
         "Programming Language :: Python :: 3",
