@@ -18,9 +18,4 @@ setuptools.setup(
         'console_scripts': [
             'pycalc = pycalc.pycalc:main'
         ]},
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
 )
