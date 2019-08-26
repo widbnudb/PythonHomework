@@ -1,72 +1,10 @@
 import argparse
 import math
 import string
+import operator
 
 
-def div_by_zero(function):
-    def wrapped(a, b):
-        if b == 0:
-            print("Division by zero!")
-            exit()
-    return wrapped
-
-
-def numbers_sum(a, b):
-    return a + b
-
-
-def numbers_sub(a, b):
-    return a - b
-
-
-def numbers_mul(a, b):
-    return a * b
-
-
-@div_by_zero
-def numbers_div(a, b):
-    return a / b
-
-
-@div_by_zero
-def numbers_div_integer(a, b):
-    return a // b
-
-
-@div_by_zero
-def numbers_div_mod(a, b):
-    return a % b
-
-
-def numbers_pow(a, b):
-    return a ** b
-
-
-def numbers_equal(a, b):
-    return a == b
-
-
-def numbers_not_equal(a, b):
-    return a != b
-
-
-def is_less(a, b):
-    return a < b
-
-
-def is_less_or_equal(a, b):
-    return a <= b
-
-
-def is_bigger_or_equal(a, b):
-    return a >= b
-
-
-def is_bigger(a, b):
-    return a > b
-
-
-functions = {"abs": abs, "round": round, "ceil": math.ceil, "copysign": math.copysign, "fabs": math.fabs,
+functions = {"abs": operator.abs, "round": round, "ceil": math.ceil, "copysign": math.copysign, "fabs": math.fabs,
              "factorial": math.factorial, "floor": math.floor, "fmod": math.fmod, "frexp": math.frexp,
              "ldexp": math.ldexp, "fsum": math.fsum, "isfinite": math.isfinite, "isinf": math.isinf,
              "isnan": math.isnan, "modf": math.modf, "trunc": math.trunc, "exp": math.exp, "expm1": math.expm1,
@@ -78,9 +16,9 @@ functions = {"abs": abs, "round": round, "ceil": math.ceil, "copysign": math.cop
              "lgamma": math.lgamma}
 math_operations_prioritizes = {"+": 2, "-": 2, "/": 3, "*": 3, "//": 3, "%": 3, "^": 4, "==": 1, "!=": 1, "<": 1,
                                "<=": 1, ">=": 1, ">": 1}
-math_operations = {"+": numbers_sum, "-": numbers_sub, "/": numbers_div, "*": numbers_mul, "//": numbers_div_integer,
-                   "%": numbers_div_mod, "^": numbers_pow, "==": numbers_equal, "!=": numbers_not_equal, "<": is_less,
-                   "<=": is_less_or_equal, ">=": is_bigger_or_equal, ">": is_bigger}
+math_operations = {"+": operator.add, "-": operator.sub, "/": operator.truediv, "*": operator.mul, "//":
+                   operator.floordiv, "%": operator.mod, "^": operator.pow, "==": operator.eq, "!=": operator.ne, "<":
+                   operator.lt, "<=": operator.le, ">=": operator.ge, ">": operator.gt}
 can_be_in_math_operations = ["+", "-", "/", "*", "%", "^", ">", "=", "!", "<"]
 constants = {"pi": math.pi, "e": math.e}
 
@@ -119,28 +57,36 @@ def functions_evaluation(expression):
                 elements_of_expression.append(float(number))
                 number = ''
             if elem in '+-' and (elements_of_expression == [] or (elements_of_expression != [] and expression[index - 1]
-                                                                  in math_operations)):
-                # we are checking numbers because before can be more than on sign
+                                                                  in math_operations or expression[index-1] == "(")):
                 if operand != '':
                     if operand not in math_operations:
-                        print("You made mistake in math operation", operand, "!")
-                        exit()
-                    elements_of_expression.append(operand)
-                    operand = ''
-                if expression[index + 1] in '0123456789':
-                    number += elem
-                elif expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(':
-                    # for escaping situations such as"++"
+                        if operand == "-+" or operand == "+-":
+                            operand = "-"
+                            continue
+                        elif operand == "++" or operand == "--":
+                            operand = "+"
+                            continue
+                        else:
+                            print("You made mistake in math operation", operand, "!")
+                            exit()
+                    if operand not in "+-":
+                        elements_of_expression.append(operand)
+                        operand = ''
+                if expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(':
                     elements_of_expression.append(0.0)
                     elements_of_expression.append(elem)
-                else:
-                    print("Something wrong with your operands!")
-                    exit()
             else:
                 operand += elem
         else:
             function += elem
             if function in constants:
+                if operand or number:
+                    if operand in math_operations:
+                        elements_of_expression.append(operand)
+                        operand = ""
+                    else:
+                        print("You make mistake near constant!")
+                        exit()
                 elements_of_expression.append(constants[function])
                 function = ""
             elif function in functions:
@@ -171,12 +117,6 @@ def functions_evaluation(expression):
     if number:
         elements_of_expression.append(float(number))
     result = polish_notation_evaluation(turn_in_polish_notation(elements_of_expression))
-    # print(turn_in_polish_notation(elements_of_expression))
-    # print(polish_notation_evaluation(turn_in_polish_notation(elements_of_expression)))
-    # print(result)
-    if result is False:
-        print("False in you expression!")
-        exit()
     return result
 
 
@@ -252,7 +192,7 @@ def checking_brackets(expression):
                 exit()
         if elem == ")":
             sum_of_brackets -= 1
-            if expression[index - 1] not in "0123456789)":
+            if expression[index - 1] not in "0123456789)ei":
                 print("You were entered wrong expression in brackets!")
                 exit()
         if sum_of_brackets < 0:
@@ -265,7 +205,7 @@ def main():
     parser = argparse.ArgumentParser(description='Pure-python command-line calculator')
     parser.add_argument('EXPRESSION', type=str, help='expression string to evaluate')
     """write exception in this place!"""
-    if parser.parse_args().EXPRESSION[-1] not in '0123456789)':
+    if parser.parse_args().EXPRESSION[-1] not in '0123456789)ei':
         print("Wrong input!")
         exit()
     if checking_brackets(parser.parse_args().EXPRESSION):
