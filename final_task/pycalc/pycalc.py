@@ -260,6 +260,7 @@ def checking_brackets(expression):
             exit()
     return sum_of_brackets
 
+
 def main():
     parser = argparse.ArgumentParser(description='Pure-python command-line calculator')
     parser.add_argument('EXPRESSION', type=str, help='expression string to evaluate')
@@ -271,3 +272,7 @@ def main():
         print("You made mistake in count of brackets!")
         exit()
     print(functions_evaluation(parser.parse_args().EXPRESSION))
+
+
+if __name__ == "__main__":
+    main()
