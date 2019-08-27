@@ -30,7 +30,7 @@ def functions_evaluation(expression):
     number, function, operand = '', '', ''  # double operands
     for index, elem in enumerate(expression):
         if elem == " ":
-            print("You entered unnecessary space!")
+            continue
         if function_end - function_start != 0:  # after getting arguments
             function_start += 1
             continue
@@ -72,7 +72,7 @@ def functions_evaluation(expression):
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
-                if expression[index+1] in "0123456789" and not elements_of_expression:
+                if expression[index+1] in "0123456789." and (expression[index-1] == "(" or not elements_of_expression):
                     number += elem
                 if expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(':
                     elements_of_expression.append(0.0)
@@ -111,8 +111,8 @@ def functions_evaluation(expression):
                 # print(get_params(expression[function_start+2:function_end]))
 
                 try:
-                    elements_of_expression.append(func(functions_evaluation(*get_params(expression[function_start + 2:
-                                                                                                   function_end]))))
+                    elements_of_expression.append(float(func(*get_params(expression[function_start + 2:function_end]))))
+                    function = ""
                 except TypeError and ValueError:
                     print("You made mistake in function arguments!")
                     exit()
@@ -177,10 +177,9 @@ def get_params(expression):
             sum_of_brackets -= 1
         if sum_of_brackets == 0 and elem == ",":
             function_end = index + 1
-            params.append(expression[function_start:function_end - 1])
+            params.append(functions_evaluation(expression[function_start:function_end - 1]))
             function_start = function_end  # if more than 1 var
-    params.append(expression[function_end::])
-    # print(params)
+    params.append(functions_evaluation(expression[function_end::]))
     return params
 
 
