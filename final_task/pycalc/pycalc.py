@@ -72,6 +72,8 @@ def functions_evaluation(expression):
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
+                if expression[index+1] in "0123456789" and not elements_of_expression:
+                    number += elem
                 if expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(':
                     elements_of_expression.append(0.0)
                     elements_of_expression.append(elem)
