@@ -89,7 +89,7 @@ def functions_evaluation(expression):
         else:
             if operand != '':
                 if operand not in math_operations:
-                    print("You made mistake in math operation", operand, "!")
+                    print("ERROR: You made mistake in math operation", operand, "!")
                     exit()
                 elements_of_expression.append(operand)
                 operand = ''
@@ -100,7 +100,7 @@ def functions_evaluation(expression):
                         elements_of_expression.append(operand)
                         operand = ""
                     else:
-                        print("You make mistake near constant!")
+                        print("ERROR: You make mistake near constant!")
                         exit()
                 elements_of_expression.append(constants[function])
                 function = ""
@@ -138,6 +138,9 @@ def functions_evaluation(expression):
     if number:
         elements_of_expression.append(float(number))
     result = polish_notation_evaluation(turn_in_polish_notation(elements_of_expression))
+    if result is False:
+        print("ERROR: It's not truth!")
+        exit()
     return result
 
 
@@ -223,15 +226,15 @@ def checking_brackets(expression):
         if elem == "(":
             sum_of_brackets += 1
             if expression[index + 1] == ")":
-                print("You were entered empty brackets!")
+                print("ERROR: You were entered empty brackets!")
                 exit()
         if elem == ")":
             sum_of_brackets -= 1
             if expression[index - 1] not in "0123456789)ei":
-                print("You were entered wrong expression in brackets!")
+                print("ERROR: You were entered wrong expression in brackets!")
                 exit()
         if sum_of_brackets < 0:
-            print("You made mistake in count of brackets!")
+            print("ERROR: You made mistake in count of brackets!")
             exit()
     return sum_of_brackets
 
@@ -246,7 +249,7 @@ def main():
     if checking_brackets(parser.parse_args().EXPRESSION):
         print("ERROR: You made mistake in count of brackets!")
         exit()
-    if parser.parse_args().EXPRESSION.find("_") != -1 and (parser.parse_args().EXPRESSION.replace("_", "")).isdigit() \
+    if parser.parse_args().EXPRESSION.find(" ") != -1 and (parser.parse_args().EXPRESSION.replace(" ", "")).isdigit() \
             is True:
         print("ERROR: You entered only numbers and spaces!")
         exit()
