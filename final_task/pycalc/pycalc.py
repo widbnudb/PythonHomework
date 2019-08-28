@@ -29,10 +29,10 @@ def functions_evaluation(expression):
     elements_of_expression = []
     number, function, operand = '', '', ''  # double operands
     for index, elem in enumerate(expression):
-        if elem == " ":
-            continue
         if function_end - function_start != 0:  # after getting arguments
             function_start += 1
+            continue
+        if elem == " ":
             continue
         if elem in "()":
             if number != '':
@@ -72,7 +72,7 @@ def functions_evaluation(expression):
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
-                if expression[index+1] in "0123456789." and (expression[index-1] == "(" or not elements_of_expression):
+                if expression[index+1] in "0123456789." and expression[index-1] not in "+-":
                     number += elem
                 if expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(':
                     elements_of_expression.append(0.0)
@@ -80,6 +80,12 @@ def functions_evaluation(expression):
             else:
                 operand += elem
         else:
+            if operand != '':
+                if operand not in math_operations:
+                    print("You made mistake in math operation", operand, "!")
+                    exit()
+                elements_of_expression.append(operand)
+                operand = ''
             function += elem
             if function in constants:
                 if operand or number:
@@ -109,13 +115,14 @@ def functions_evaluation(expression):
                         break
                 func = functions.get(function)
                 # print(get_params(expression[function_start+2:function_end]))
-
                 try:
                     elements_of_expression.append(float(func(*get_params(expression[function_start + 2:function_end]))))
                     function = ""
                 except TypeError and ValueError:
                     print("You made mistake in function arguments!")
                     exit()
+    if operand and operand in math_operations:
+        elements_of_expression.append(operand)
     if number:
         elements_of_expression.append(float(number))
     result = polish_notation_evaluation(turn_in_polish_notation(elements_of_expression))
@@ -125,15 +132,20 @@ def functions_evaluation(expression):
 def turn_in_polish_notation(elements_of_expression):
     elements_of_expression_in_polish = []
     operation_stack = []
+    counter = 0
     for elem in elements_of_expression:
         if elem in math_operations_prioritizes:
             if operation_stack and operation_stack[-1] != "(":
-                if math_operations_prioritizes.get(elem) <= math_operations_prioritizes.get(operation_stack[-1]):
-                    elements_of_expression_in_polish.append(operation_stack[-1])
+                for elem_1 in operation_stack[::-1]:
+                    if math_operations_prioritizes.get(elem) <= math_operations_prioritizes.get(elem_1):
+                        elements_of_expression_in_polish.append(elem_1)
+                        counter += 1
+                    else:
+                        break
+                while counter:
                     operation_stack.pop()
-                    operation_stack.append(elem)
-                else:
-                    operation_stack.append(elem)
+                    counter -= 1
+                operation_stack.append(elem)
             else:
                 operation_stack.append(elem)
         elif elem == "(":
