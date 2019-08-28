@@ -58,24 +58,32 @@ def functions_evaluation(expression):
                                                                   in math_operations or expression[index-1] == "(")):
                 if operand != '':
                     if operand not in math_operations:
-                        if operand == "-+" or operand == "+-":
-                            operand = "-"
-                            continue
-                        elif operand == "++" or operand == "--":
-                            operand = "+"
-                            continue
-                        else:
-                            print("You made mistake in math operation", operand, "!")
-                            exit()
+                        print("You made mistake in math operation", operand, "!")
+                        exit()
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
                 if expression[index+1] in "0123456789." and (expression[index-1] not in "+-"
-                                                             or elements_of_expression == []):
+                                                                 or elements_of_expression == []):
+                    if operand:
+                        elements_of_expression.append(operand)
+                        operand = ''
                     number += elem
-                if expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(':
+                elif (expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(') and \
+                        expression[index-1] not in "+-":
+                    if operand:
+                        elements_of_expression.append(operand)
+                        operand = ''
                     elements_of_expression.append(0.0)
                     elements_of_expression.append(elem)
+                else:
+                    operand += elem
+                    if operand == "-+" or operand == "+-":
+                        operand = "-"
+                        continue
+                    elif operand == "++" or operand == "--":
+                        operand = "+"
+                        continue
             else:
                 operand += elem
         else:
