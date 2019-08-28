@@ -225,8 +225,7 @@ def main():
     if checking_brackets(parser.parse_args().EXPRESSION):
         print("You made mistake in count of brackets!")
         exit()
-    parser.parse_args().EXPRESSION.replace(" ", "")
-    print(functions_evaluation(parser.parse_args().EXPRESSION))
+    print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
 
 
 if __name__ == "__main__":
