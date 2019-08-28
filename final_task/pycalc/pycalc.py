@@ -25,9 +25,7 @@ constants = {"pi": math.pi, "e": math.e}
 def checking_spaces(expression):
     for index, elem in enumerate(expression):
         if elem == " ":
-            if (expression[index-1] in math_operations and expression[index-1] not in "+-" and expression[index + 1] in
-                can_be_in_math_operations and expression[index + 1] not in "+-") or \
-                    (expression[index-1] and expression[index + 1] in "0123456789"):
+            if expression[index-1] in "/<=>!" and expression[index+1] in "/=":
                 print("ERROR: Unusual space")
                 exit()
 
