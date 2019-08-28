@@ -25,7 +25,7 @@ constants = {"pi": math.pi, "e": math.e}
 def checking_spaces(expression):
     for index, elem in enumerate(expression):
         if elem == " ":
-            if expression[index-1] in "/<=>!" and expression[index+1] in "/=":
+            if expression[index-1] in "/<=>!0123456789" and expression[index+1] in "/=0123456789":
                 print("ERROR: Unusual space")
                 exit()
 
@@ -257,10 +257,6 @@ def main():
         print("ERROR: You made mistake in count of brackets!")
         exit()
     checking_spaces(parser.parse_args().EXPRESSION)
-    # if parser.parse_args().EXPRESSION.find(" ") != -1 and (parser.parse_args().EXPRESSION.replace(" ", "")).isdigit() \
-    #         is True:
-    #     print("ERROR: You entered only numbers and spaces!")
-    #     exit()
     print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
 
 
