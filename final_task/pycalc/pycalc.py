@@ -3,7 +3,6 @@ import math
 import string
 import operator
 
-
 functions = {"abs": operator.abs, "round": round, "ceil": math.ceil, "copysign": math.copysign, "fabs": math.fabs,
              "factorial": math.factorial, "floor": math.floor, "fmod": math.fmod, "frexp": math.frexp,
              "ldexp": math.ldexp, "fsum": math.fsum, "isfinite": math.isfinite, "isinf": math.isinf,
@@ -17,8 +16,8 @@ functions = {"abs": operator.abs, "round": round, "ceil": math.ceil, "copysign":
 math_operations_prioritizes = {"+": 2, "-": 2, "/": 3, "*": 3, "//": 3, "%": 3, "^": 4, "==": 1, "!=": 1, "<": 1,
                                "<=": 1, ">=": 1, ">": 1}
 math_operations = {"+": operator.add, "-": operator.sub, "/": operator.truediv, "*": operator.mul, "//":
-                   operator.floordiv, "%": operator.mod, "^": operator.pow, "==": operator.eq, "!=": operator.ne, "<":
-                   operator.lt, "<=": operator.le, ">=": operator.ge, ">": operator.gt}
+    operator.floordiv, "%": operator.mod, "^": operator.pow, "==": operator.eq, "!=": operator.ne, "<":
+                       operator.lt, "<=": operator.le, ">=": operator.ge, ">": operator.gt}
 can_be_in_math_operations = ["+", "-", "/", "*", "%", "^", ">", "=", "!", "<"]
 constants = {"pi": math.pi, "e": math.e}
 
@@ -33,8 +32,9 @@ def functions_evaluation(expression):
             function_start += 1
             continue
         if elem == " ":
-            if (operand in math_operations and expression[index+1] in can_be_in_math_operations) or \
-                    (number and expression[index+1] in "0123456789"):
+            if (operand in math_operations and expression[index + 1] in can_be_in_math_operations and
+                expression[index + 1] not in "+-") or \
+                    (number and expression[index + 1] in "0123456789"):
                 print("ERROR: Unusual space")
                 exit()
             continue
@@ -61,7 +61,7 @@ def functions_evaluation(expression):
                 elements_of_expression.append(float(number))
                 number = ''
             if elem in '+-' and (elements_of_expression == [] or (elements_of_expression != [] and expression[index - 1]
-                                                                  in math_operations or expression[index-1] == "(")):
+                                                                  in math_operations or expression[index - 1] == "(")):
                 if operand != '':
                     if operand not in math_operations:
                         print("ERROR: You made mistake in math operation", operand, "!")
@@ -69,14 +69,14 @@ def functions_evaluation(expression):
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
-                if expression[index+1] in "0123456789." and (expression[index-1] not in "+-"
-                                                             or not elements_of_expression):
+                if expression[index + 1] in "0123456789." and (expression[index - 1] not in "+-"
+                                                               or not elements_of_expression):
                     if operand:
                         elements_of_expression.append(operand)
                         operand = ''
                     number += elem
                 elif (expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(') and \
-                        expression[index-1] not in "+-":
+                        expression[index - 1] not in "+-":
                     if operand:
                         elements_of_expression.append(operand)
                         operand = ''
@@ -136,7 +136,7 @@ def functions_evaluation(expression):
                 except ValueError:
                     print("ERROR: You made mistake in function arguments!")
                     exit()
-            elif expression[index+1] == "(" and function:
+            elif expression[index + 1] == "(" and function:
                 print("ERROR: Wrong name of function!")
                 exit()
     if operand and operand in math_operations:
