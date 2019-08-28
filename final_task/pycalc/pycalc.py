@@ -124,9 +124,15 @@ def functions_evaluation(expression):
                 try:
                     elements_of_expression.append(float(func(*get_params(expression[function_start + 2:function_end]))))
                     function = ""
-                except TypeError and ValueError:
-                    print("You made mistake in function arguments!")
+                except TypeError:
+                    print("ERROR: You made mistake in function arguments!")
                     exit()
+                except ValueError:
+                    print("ERROR: You made mistake in function arguments!")
+                    exit()
+            elif expression[index+1] == "(" and function:
+                print("ERROR: Wrong name of function!")
+                exit()
     if operand and operand in math_operations:
         elements_of_expression.append(operand)
     if number:
@@ -179,8 +185,12 @@ def polish_notation_evaluation(elements_of_expression_in_polish):
         elif elem in math_operations:
             function = math_operations.get(elem)
             if len(count_stack) == 1:
-                function_result = count_stack[-1]
-                count_stack.pop()
+                if elem in "+-":
+                    function_result = count_stack[-1]
+                    count_stack.pop()
+                else:
+                    print("ERROR: Wrong count of params!")
+                    exit()
             else:
                 function_result = function(count_stack[-2], count_stack[-1])
                 count_stack.pop()
@@ -230,11 +240,15 @@ def main():
     parser = argparse.ArgumentParser(description='Pure-python command-line calculator')
     parser.add_argument('EXPRESSION', type=str, help='expression string to evaluate')
     """write exception in this place!"""
-    if parser.parse_args().EXPRESSION[-1] not in '0123456789)ei':
+    if parser.parse_args().EXPRESSION[-1] not in '0123456789)ei' or not parser.parse_args().EXPRESSION:
         print("ERROR: Wrong input!")
         exit()
     if checking_brackets(parser.parse_args().EXPRESSION):
-        print("You made mistake in count of brackets!")
+        print("ERROR: You made mistake in count of brackets!")
+        exit()
+    if parser.parse_args().EXPRESSION.find("_") != -1 and (parser.parse_args().EXPRESSION.replace("_", "")).isdigit() \
+            is True:
+        print("ERROR: You entered only numbers and spaces!")
         exit()
     print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
 
