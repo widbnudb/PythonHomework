@@ -33,7 +33,8 @@ def functions_evaluation(expression):
             function_start += 1
             continue
         if elem == " ":
-            if (operand in math_operations and expression[index+1] in math_operations) or (number and expression[index+1] in "0123456789"):
+            if (operand in math_operations and expression[index+1] in can_be_in_math_operations) or \
+                    (number and expression[index+1] in "0123456789"):
                 print("ERROR: Unusual space")
                 exit()
             continue
