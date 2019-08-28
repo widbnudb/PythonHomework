@@ -32,8 +32,6 @@ def functions_evaluation(expression):
         if function_end - function_start != 0:  # after getting arguments
             function_start += 1
             continue
-        if elem == " ":
-            continue
         if elem in "()":
             if number != '':
                 elements_of_expression.append(float(number))
@@ -72,7 +70,8 @@ def functions_evaluation(expression):
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
-                if expression[index+1] in "0123456789." and expression[index-1] not in "+-":
+                if expression[index+1] in "0123456789." and (expression[index-1] not in "+-"
+                                                             or elements_of_expression == []):
                     number += elem
                 if expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(':
                     elements_of_expression.append(0.0)
@@ -137,7 +136,9 @@ def turn_in_polish_notation(elements_of_expression):
         if elem in math_operations_prioritizes:
             if operation_stack and operation_stack[-1] != "(":
                 for elem_1 in operation_stack[::-1]:
-                    if math_operations_prioritizes.get(elem) <= math_operations_prioritizes.get(elem_1):
+                    if elem_1 == "(":
+                        break
+                    elif math_operations_prioritizes.get(elem) <= math_operations_prioritizes.get(elem_1):
                         elements_of_expression_in_polish.append(elem_1)
                         counter += 1
                     else:
@@ -224,6 +225,7 @@ def main():
     if checking_brackets(parser.parse_args().EXPRESSION):
         print("You made mistake in count of brackets!")
         exit()
+    parser.parse_args().EXPRESSION.replace(" ", "")
     print(functions_evaluation(parser.parse_args().EXPRESSION))
 
 
