@@ -22,6 +22,16 @@ can_be_in_math_operations = ["+", "-", "/", "*", "%", "^", ">", "=", "!", "<"]
 constants = {"pi": math.pi, "e": math.e}
 
 
+def checking_spaces(expression):
+    for index, elem in enumerate(expression):
+        if elem == " ":
+            if (expression[index-1] in math_operations and expression[index-1] not in "+-" and expression[index + 1] in
+                can_be_in_math_operations and expression[index + 1] not in "+-") or \
+                    (expression[index-1] and expression[index + 1] in "0123456789"):
+                print("ERROR: Unusual space")
+                exit()
+
+
 def functions_evaluation(expression):
     function_end = 0
     function_start = 0
@@ -30,13 +40,6 @@ def functions_evaluation(expression):
     for index, elem in enumerate(expression):
         if function_end - function_start != 0:  # after getting arguments
             function_start += 1
-            continue
-        if elem == " ":
-            if (operand in math_operations and operand not in "+-" and expression[index + 1] in
-                can_be_in_math_operations and expression[index + 1] not in "+-") or \
-                    (number and expression[index + 1] in "0123456789"):
-                print("ERROR: Unusual space")
-                exit()
             continue
         if elem in "()":
             if number != '':
@@ -255,11 +258,12 @@ def main():
     if checking_brackets(parser.parse_args().EXPRESSION):
         print("ERROR: You made mistake in count of brackets!")
         exit()
+    checking_spaces(parser.parse_args().EXPRESSION)
     # if parser.parse_args().EXPRESSION.find(" ") != -1 and (parser.parse_args().EXPRESSION.replace(" ", "")).isdigit() \
     #         is True:
     #     print("ERROR: You entered only numbers and spaces!")
     #     exit()
-    print(functions_evaluation(parser.parse_args().EXPRESSION))
+    print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
 
 
 if __name__ == "__main__":
