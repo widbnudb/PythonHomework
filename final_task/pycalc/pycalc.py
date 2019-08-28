@@ -32,6 +32,11 @@ def functions_evaluation(expression):
         if function_end - function_start != 0:  # after getting arguments
             function_start += 1
             continue
+        if elem == " ":
+            if (operand in math_operations and expression[index+1] in math_operations) or (number and expression[index+1] in "0123456789"):
+                print("ERROR: Unusual space")
+                exit()
+            continue
         if elem in "()":
             if number != '':
                 elements_of_expression.append(float(number))
@@ -45,7 +50,7 @@ def functions_evaluation(expression):
         elif (elem in "1234567890" and not function) or (elem == "." and elem not in number):
             if operand != '':
                 if operand not in math_operations:
-                    print("You made mistake in math operation", operand, "!")
+                    print("ERROR: You made mistake in math operation", operand, "!")
                     exit()
                 elements_of_expression.append(operand)
                 operand = ''
@@ -58,7 +63,7 @@ def functions_evaluation(expression):
                                                                   in math_operations or expression[index-1] == "(")):
                 if operand != '':
                     if operand not in math_operations:
-                        print("You made mistake in math operation", operand, "!")
+                        print("ERROR: You made mistake in math operation", operand, "!")
                         exit()
                     if operand not in "+-":
                         elements_of_expression.append(operand)
@@ -138,9 +143,6 @@ def functions_evaluation(expression):
     if number:
         elements_of_expression.append(float(number))
     result = polish_notation_evaluation(turn_in_polish_notation(elements_of_expression))
-    if result is False:
-        print("ERROR: It's not truth!")
-        exit()
     return result
 
 
@@ -243,17 +245,20 @@ def main():
     parser = argparse.ArgumentParser(description='Pure-python command-line calculator')
     parser.add_argument('EXPRESSION', type=str, help='expression string to evaluate')
     """write exception in this place!"""
-    if parser.parse_args().EXPRESSION[-1] not in '0123456789)ei' or not parser.parse_args().EXPRESSION:
+    if not parser.parse_args().EXPRESSION:
+        print("ERROR: Wrong input!")
+        exit()
+    if parser.parse_args().EXPRESSION[-1] not in '0123456789)ei':
         print("ERROR: Wrong input!")
         exit()
     if checking_brackets(parser.parse_args().EXPRESSION):
         print("ERROR: You made mistake in count of brackets!")
         exit()
-    if parser.parse_args().EXPRESSION.find(" ") != -1 and (parser.parse_args().EXPRESSION.replace(" ", "")).isdigit() \
-            is True:
-        print("ERROR: You entered only numbers and spaces!")
-        exit()
-    print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
+    # if parser.parse_args().EXPRESSION.find(" ") != -1 and (parser.parse_args().EXPRESSION.replace(" ", "")).isdigit() \
+    #         is True:
+    #     print("ERROR: You entered only numbers and spaces!")
+    #     exit()
+    print(functions_evaluation(parser.parse_args().EXPRESSION))
 
 
 if __name__ == "__main__":
