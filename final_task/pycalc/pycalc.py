@@ -64,7 +64,7 @@ def functions_evaluation(expression):
                         elements_of_expression.append(operand)
                         operand = ''
                 if expression[index+1] in "0123456789." and (expression[index-1] not in "+-"
-                                                                 or elements_of_expression == []):
+                                                             or not elements_of_expression):
                     if operand:
                         elements_of_expression.append(operand)
                         operand = ''
@@ -121,7 +121,6 @@ def functions_evaluation(expression):
                         function_end = index_1 + function_start + 1
                         break
                 func = functions.get(function)
-                # print(get_params(expression[function_start+2:function_end]))
                 try:
                     elements_of_expression.append(float(func(*get_params(expression[function_start + 2:function_end]))))
                     function = ""
@@ -179,9 +178,13 @@ def polish_notation_evaluation(elements_of_expression_in_polish):
             count_stack.append(elem)
         elif elem in math_operations:
             function = math_operations.get(elem)
-            function_result = function(count_stack[-2], count_stack[-1])
-            count_stack.pop()
-            count_stack.pop()
+            if len(count_stack) == 1:
+                function_result = count_stack[-1]
+                count_stack.pop()
+            else:
+                function_result = function(count_stack[-2], count_stack[-1])
+                count_stack.pop()
+                count_stack.pop()
             count_stack.append(function_result)
     return count_stack[0]
 
