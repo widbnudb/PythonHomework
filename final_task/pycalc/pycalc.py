@@ -85,7 +85,8 @@ def functions_evaluation(expression):
     elements_of_expression = []
     number, function, operand = '', '', ''  # double operands
     for index, elem in enumerate(expression):
-        if function_end - function_start != 0:  # after getting arguments
+        # after getting arguments for function part of expression with params will be skipped
+        if function_end - function_start != 0:
             function_start += 1
             continue
         if elem in "()":
@@ -110,6 +111,7 @@ def functions_evaluation(expression):
             if number != '':
                 elements_of_expression.append(float(number))
                 number = ''
+            # this checking for +-, which mean sign of number/constant
             if elem in '+-' and (elements_of_expression == [] or (elements_of_expression != [] and expression[index - 1]
                                                                   in math_operations or expression[index - 1] == "(")):
                 if operand != '':
