@@ -42,6 +42,14 @@ class TestWrongInput(unittest.TestCase):
         self.assertEqual(pycalc.functions_evaluation("isnan(110)"), math.isnan(110))
         self.assertEqual(pycalc.functions_evaluation("trunc(12.11)"), math.trunc(12.11))
 
+    def test_common_expressions(self):
+        self.assertEqual(pycalc.functions_evaluation("5^11^0"), 5**11**0)
+        self.assertEqual(pycalc.functions_evaluation("sin(sin(-.5/-.5)+log(11,11))"), math.sin(math.sin(-.5/-.5)
+                                                                                               + math.log(11, 11)))
+        self.assertEqual(pycalc.functions_evaluation("-.5/1.6+14+(12-sin(45)+log(log10(log1p(12)))"),
+                         -.5/1.6+14+(12 - math.sin(45)+math.log(math.log10(math.log1p(12)))))
+        self.assertEqual(pycalc.functions_evaluation("e+pi-(e^pi)"), math.e+math.pi-(math.e**math.pi))
+
 
 if __name__ == '__main__':
     unittest.main()
