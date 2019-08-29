@@ -165,7 +165,7 @@ def functions_evaluation(expression):
                 elements_of_expression.append(operand)
                 operand = ''
             function += elem
-            if function in constants and expression[index+1] not in string.ascii_lowercase:
+            if function in constants and expression[index+1] and expression[index+1] not in string.ascii_lowercase:
                 if operand or number:
                     if operand in math_operations:
                         elements_of_expression.append(operand)
