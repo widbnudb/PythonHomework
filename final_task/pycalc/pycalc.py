@@ -15,9 +15,9 @@ functions = {"abs": operator.abs, "round": round, "ceil": math.ceil, "copysign":
              "lgamma": math.lgamma}
 math_operations_prioritizes = {"+": 2, "-": 2, "/": 3, "*": 3, "//": 3, "%": 3, "^": 4, "==": 1, "!=": 1, "<": 1,
                                "<=": 1, ">=": 1, ">": 1}
-math_operations = {"+": operator.add, "-": operator.sub, "/": operator.truediv, "*": operator.mul, "//":
-    operator.floordiv, "%": operator.mod, "^": operator.pow, "==": operator.eq, "!=": operator.ne, "<":
-                       operator.lt, "<=": operator.le, ">=": operator.ge, ">": operator.gt}
+math_operations = {"+": operator.add, "-": operator.sub, "/": operator.truediv, "*": operator.mul,
+                   "//": operator.floordiv, "%": operator.mod, "^": operator.pow, "==": operator.eq, "!=": operator.ne,
+                   "<": operator.lt, "<=": operator.le, ">=": operator.ge, ">": operator.gt}
 can_be_in_math_operations = ["+", "-", "/", "*", "%", "^", ">", "=", "!", "<"]
 constants = {"pi": math.pi, "e": math.e}
 
@@ -25,7 +25,7 @@ constants = {"pi": math.pi, "e": math.e}
 def checking_spaces(expression):
     for index, elem in enumerate(expression):
         if elem == " ":
-            if expression[index-1] in "/<=>!0123456789" and expression[index+1] in "/=0123456789":
+            if expression[index - 1] in "/<=>!0123456789" and expression[index + 1] in "/=0123456789":
                 print("ERROR: Unusual space")
                 exit()
 
@@ -186,6 +186,7 @@ def turn_in_polish_notation(elements_of_expression):
 
 def polish_notation_evaluation(elements_of_expression_in_polish):
     count_stack = []
+    function_result = 0
     for elem in elements_of_expression_in_polish:
         if isinstance(elem, float):
             count_stack.append(elem)
@@ -243,20 +244,24 @@ def checking_brackets(expression):
     return sum_of_brackets
 
 
+def checking_input(expression):
+    if not expression:
+        print("ERROR: Wrong input!")
+        exit()
+    if expression[-1] not in '0123456789)ei':
+        print("ERROR: Wrong input!")
+        exit()
+    if checking_brackets(expression):
+        print("ERROR: You made mistake in count of brackets!")
+        exit()
+    checking_spaces(expression)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Pure-python command-line calculator')
     parser.add_argument('EXPRESSION', type=str, help='expression string to evaluate')
     """write exception in this place!"""
-    if not parser.parse_args().EXPRESSION:
-        print("ERROR: Wrong input!")
-        exit()
-    if parser.parse_args().EXPRESSION[-1] not in '0123456789)ei':
-        print("ERROR: Wrong input!")
-        exit()
-    if checking_brackets(parser.parse_args().EXPRESSION):
-        print("ERROR: You made mistake in count of brackets!")
-        exit()
-    checking_spaces(parser.parse_args().EXPRESSION)
+    checking_input(parser.parse_args().EXPRESSION)
     print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
 
 
