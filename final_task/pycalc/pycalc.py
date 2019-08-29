@@ -15,8 +15,6 @@ functions = {"abs": operator.abs,
              "isinf": math.isinf,
              "isnan": math.isnan,
              "trunc": math.trunc,
-             "exp": math.exp,
-             "expm1": math.expm1,
              "log": math.log,
              "log1p": math.log1p,
              "log10": math.log10,
@@ -39,8 +37,6 @@ functions = {"abs": operator.abs,
              "acosh": math.cosh,
              "asinh": math.asinh,
              "atanh": math.atanh,
-             "erf": math.erf,
-             "erfc": math.erfc,
              "gamma": math.gamma,
              "lgamma": math.lgamma}
 math_operations_prioritizes = {"+": 2,
@@ -165,7 +161,7 @@ def functions_evaluation(expression):
                 elements_of_expression.append(operand)
                 operand = ''
             function += elem
-            if function in constants and expression[index+1] and expression[index+1] not in string.ascii_lowercase:
+            if function in constants:
                 if operand or number:
                     if operand in math_operations:
                         elements_of_expression.append(operand)
@@ -173,8 +169,9 @@ def functions_evaluation(expression):
                     else:
                         print("ERROR: You make mistake near constant!")
                         exit()
-                elements_of_expression.append(constants[function])
-                function = ""
+                else:
+                    elements_of_expression.append(constants[function])
+                    function = ""
             elif function in functions:
                 if expression[index + 1] != "(":
                     continue
