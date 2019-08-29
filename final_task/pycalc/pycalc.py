@@ -151,22 +151,33 @@ def functions_evaluation(expression):
 def turn_in_polish_notation(elements_of_expression):
     elements_of_expression_in_polish = []
     operation_stack = []
+    elements_for_counting_pow = []
     counter = 0
     for elem in elements_of_expression:
-        if elem in math_operations_prioritizes:
+        if elem in math_operations_prioritizes or (len(operation_stack) >= 2
+                                                   and operation_stack[-1] == operation_stack[-2] == "^"):
             if operation_stack and operation_stack[-1] != "(":
-                for elem_1 in operation_stack[::-1]:
-                    if elem_1 == "(":
-                        break
-                    elif math_operations_prioritizes.get(elem) <= math_operations_prioritizes.get(elem_1):
-                        elements_of_expression_in_polish.append(elem_1)
-                        counter += 1
-                    else:
-                        break
-                while counter:
-                    operation_stack.pop()
-                    counter -= 1
-                operation_stack.append(elem)
+                if operation_stack[-1] == elem == "^":
+                    operation_stack.append(elem)
+                elif isinstance(elem, float):
+                    elements_for_counting_pow.append(elements_of_expression_in_polish.pop())
+                    elements_for_counting_pow.append(elem)
+                    elements_for_counting_pow.append(operation_stack.pop())
+                    elements_of_expression_in_polish.append(polish_notation_evaluation(elements_for_counting_pow))
+                    elements_of_expression_in_polish.append(operation_stack.pop())
+                else:
+                    for elem_1 in operation_stack[::-1]:
+                        if elem_1 == "(":
+                            break
+                        elif math_operations_prioritizes.get(elem) <= math_operations_prioritizes.get(elem_1):
+                            elements_of_expression_in_polish.append(elem_1)
+                            counter += 1
+                        else:
+                            break
+                    while counter:
+                        operation_stack.pop()
+                        counter -= 1
+                    operation_stack.append(elem)
             else:
                 operation_stack.append(elem)
         elif elem == "(":
@@ -263,7 +274,6 @@ def main():
     """write exception in this place!"""
     checking_input(parser.parse_args().EXPRESSION)
     print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
-    print(polish_notation_evaluation([3.0, 4.0, "^", 2.0, "^"]))
 
 
 if __name__ == "__main__":
