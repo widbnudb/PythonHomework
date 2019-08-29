@@ -3,21 +3,72 @@ import math
 import string
 import operator
 
-functions = {"abs": operator.abs, "round": round, "ceil": math.ceil, "copysign": math.copysign, "fabs": math.fabs,
-             "factorial": math.factorial, "floor": math.floor, "fmod": math.fmod, "frexp": math.frexp,
-             "ldexp": math.ldexp, "fsum": math.fsum, "isfinite": math.isfinite, "isinf": math.isinf,
-             "isnan": math.isnan, "modf": math.modf, "trunc": math.trunc, "exp": math.exp, "expm1": math.expm1,
-             "log": math.log, "log1p": math.log1p, "log10": math.log10, "log2": math.log2, "pow": math.pow,
-             "sqrt": math.sqrt, "acos": math.acos, "asin": math.asin, "atan": math.atan, "atan2": math.atan2,
-             "cos": math.cos, "sin": math.sin, "tan": math.tan, "hypot": math.hypot, "degrees": math.degrees,
-             "radians": math.radians, "cosh": math.cosh, "sinh": math.sinh, "tanh": math.tanh, "acosh": math.cosh,
-             "asinh": math.asinh, "atanh": math.atanh, "erf": math.erf, "erfc": math.erfc, "gamma": math.gamma,
+functions = {"abs": operator.abs,
+             "round": round,
+             "ceil": math.ceil,
+             "copysign": math.copysign,
+             "fabs": math.fabs,
+             "factorial": math.factorial,
+             "floor": math.floor,
+             "fmod": math.fmod,
+             "isfinite": math.isfinite,
+             "isinf": math.isinf,
+             "isnan": math.isnan,
+             "trunc": math.trunc,
+             "exp": math.exp,
+             "expm1": math.expm1,
+             "log": math.log,
+             "log1p": math.log1p,
+             "log10": math.log10,
+             "log2": math.log2,
+             "pow": math.pow,
+             "sqrt": math.sqrt,
+             "acos": math.acos,
+             "asin": math.asin,
+             "atan": math.atan,
+             "atan2": math.atan2,
+             "cos": math.cos,
+             "sin": math.sin,
+             "tan": math.tan,
+             "hypot": math.hypot,
+             "degrees": math.degrees,
+             "radians": math.radians,
+             "cosh": math.cosh,
+             "sinh": math.sinh,
+             "tanh": math.tanh,
+             "acosh": math.cosh,
+             "asinh": math.asinh,
+             "atanh": math.atanh,
+             "erf": math.erf,
+             "erfc": math.erfc,
+             "gamma": math.gamma,
              "lgamma": math.lgamma}
-math_operations_prioritizes = {"+": 2, "-": 2, "/": 3, "*": 3, "//": 3, "%": 3, "^": 4, "==": 1, "!=": 1, "<": 1,
-                               "<=": 1, ">=": 1, ">": 1}
-math_operations = {"+": operator.add, "-": operator.sub, "/": operator.truediv, "*": operator.mul,
-                   "//": operator.floordiv, "%": operator.mod, "^": operator.pow, "==": operator.eq, "!=": operator.ne,
-                   "<": operator.lt, "<=": operator.le, ">=": operator.ge, ">": operator.gt}
+math_operations_prioritizes = {"+": 2,
+                               "-": 2,
+                               "/": 3,
+                               "*": 3,
+                               "//": 3,
+                               "%": 3,
+                               "^": 4,
+                               "==": 1,
+                               "!=": 1,
+                               "<": 1,
+                               "<=": 1,
+                               ">=": 1,
+                               ">": 1}
+math_operations = {"+": operator.add,
+                   "-": operator.sub,
+                   "/": operator.truediv,
+                   "*": operator.mul,
+                   "//": operator.floordiv,
+                   "%": operator.mod,
+                   "^": operator.pow,
+                   "==": operator.eq,
+                   "!=": operator.ne,
+                   "<": operator.lt,
+                   "<=": operator.le,
+                   ">=": operator.ge,
+                   ">": operator.gt}
 can_be_in_math_operations = ["+", "-", "/", "*", "%", "^", ">", "=", "!", "<"]
 constants = {"pi": math.pi, "e": math.e, "-e": -math.e, "-pi": -math.pi}
 
@@ -114,7 +165,7 @@ def functions_evaluation(expression):
                 elements_of_expression.append(operand)
                 operand = ''
             function += elem
-            if function in constants:
+            if function in constants and expression[index+1] not in string.ascii_lowercase:
                 if operand or number:
                     if operand in math_operations:
                         elements_of_expression.append(operand)
