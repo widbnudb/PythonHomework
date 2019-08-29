@@ -44,7 +44,6 @@ class TestWrongInput(unittest.TestCase):
         self.assertEqual(pycalc.functions_evaluation("exp(12)"), math.exp(12))
         self.assertEqual(pycalc.functions_evaluation("expm1(0.0014)"), math.expm1(0.0014))
 
-
     def test_common_expressions(self):
         self.assertEqual(pycalc.functions_evaluation("5^11^0"), 5**11**0)
         self.assertEqual(pycalc.functions_evaluation("sin(sin(-.5/-.5)+log(11,11))"), math.sin(math.sin(-.5/-.5)
