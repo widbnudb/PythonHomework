@@ -23,14 +23,16 @@ constants = {"pi": math.pi, "e": math.e, "-e": -math.e, "-pi": -math.pi}
 
 
 def checking_spaces(expression):
+    """function, which checks useless spaces between numbers and two-symbols signs"""
     for index, elem in enumerate(expression):
         if elem == " ":
             if expression[index - 1] in "/<=>!0123456789" and expression[index + 1] in "/=0123456789":
-                print("ERROR: Unusual space")
+                print("ERROR: Useless space")
                 exit()
 
 
 def functions_evaluation(expression):
+    """function, which parses expression, send it in functions, which help evaluate and return result of evaluation"""
     function_end = 0
     function_start = 0
     elements_of_expression = []
@@ -160,6 +162,8 @@ def functions_evaluation(expression):
 
 
 def turn_in_polish_notation(elements_of_expression):
+    """function, which receives list with elements of parsed expression, and return new list with in order for
+    calculation in polish notation"""
     elements_of_expression_in_polish = []
     operation_stack = []
     elements_for_counting_pow = []
@@ -207,6 +211,8 @@ def turn_in_polish_notation(elements_of_expression):
 
 
 def polish_notation_evaluation(elements_of_expression_in_polish):
+    """function, which receives list with elements of expression in order for polish notation.
+    Calculate expression in polish notation"""
     count_stack = []
     function_result = 0
     for elem in elements_of_expression_in_polish:
@@ -230,6 +236,8 @@ def polish_notation_evaluation(elements_of_expression_in_polish):
 
 
 def get_params(expression):
+    """function receives part of expression, which is a function param. Function parses this expression on params.
+    Return list of params"""
     params = []
     sum_of_brackets = 0
     function_end = 0
@@ -248,6 +256,7 @@ def get_params(expression):
 
 
 def checking_brackets(expression):
+    """function receives expression and checks accuracy of brackets in this expression"""
     sum_of_brackets = 0
     for index, elem in enumerate(expression):
         if elem == "(":
@@ -267,6 +276,7 @@ def checking_brackets(expression):
 
 
 def checking_input(expression):
+    """this function receives expression and checks last symbol, empty string, wrong brackets and useless spaces"""
     if not expression:
         print("ERROR: Wrong input!")
         exit()
@@ -280,6 +290,7 @@ def checking_input(expression):
 
 
 def main():
+    """this function print result and for argparse module"""
     parser = argparse.ArgumentParser(description='Pure-python command-line calculator')
     parser.add_argument('EXPRESSION', type=str, help='expression string to evaluate')
     """write exception in this place!"""
