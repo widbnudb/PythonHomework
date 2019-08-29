@@ -70,10 +70,20 @@ def functions_evaluation(expression):
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
-                if expression[index + 1] in "0123456789." and expression[index - 1] not in "+-":
+                if expression[index + 1] in "0123456789." and (expression[index - 1] not in "+-"
+                                                               or not elements_of_expression):
                     if operand:
-                        elements_of_expression.append(operand)
-                        operand = ''
+                        if not elements_of_expression:
+                            operand += elem
+                            if operand == "-+" or operand == "+-":
+                                operand = "-"
+                            elif operand == "++" or operand == "--":
+                                operand = "+"
+                            number += operand
+                            continue
+                        else:
+                            elements_of_expression.append(operand)
+                            operand = ''
                     number += elem
                 elif expression[index+1] == "e" or (expression[index+1] == "p" and expression[index+2] == "i"):
                     function += elem
