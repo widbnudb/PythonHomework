@@ -263,6 +263,7 @@ def main():
     """write exception in this place!"""
     checking_input(parser.parse_args().EXPRESSION)
     print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
+    print(polish_notation_evaluation([3.0, 4.0, "^", 2.0, "^"]))
 
 
 if __name__ == "__main__":
