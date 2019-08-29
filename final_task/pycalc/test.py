@@ -1,10 +1,11 @@
 import unittest
-target = __import__("pycalc.py")
+target = __import__("pycalc")
+calc = target.functions_evaluation
 
 
 class TestWrongInput(unittest.TestCase):
     def test_comparison(self):
-        self.assertTrue(target.functions_evaluation('8*3==6*4'))
+        self.assertTrue(calc('8*3==6*4'))
         self.assertTrue(target.functions_evaluation('4/3+1!=4/3+2'))
         self.assertTrue(target.functions_evaluation('6*(1+3)<7*(1+3)'))
         self.assertTrue(target.functions_evaluation('-4/-1>4/-1'))
