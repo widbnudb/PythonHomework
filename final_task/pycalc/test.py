@@ -1,6 +1,5 @@
 import unittest
-import pycalc
-#from pycalc import pycalc
+from pycalc import pycalc
 
 
 class TestWrongInput(unittest.TestCase):
@@ -27,7 +26,6 @@ class TestWrongInput(unittest.TestCase):
         self.assertEqual(pycalc.functions_evaluation("-abs(5)"), -abs(5))
         self.assertEqual(pycalc.functions_evaluation("500"), +-+-500)
         self.assertEqual(pycalc.functions_evaluation("--------------+5"), --------------+5)
-
 
 
 if __name__ == '__main__':

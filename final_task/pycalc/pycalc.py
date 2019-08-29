@@ -20,7 +20,6 @@ math_operations = {"+": operator.add, "-": operator.sub, "/": operator.truediv, 
                    "<": operator.lt, "<=": operator.le, ">=": operator.ge, ">": operator.gt}
 can_be_in_math_operations = ["+", "-", "/", "*", "%", "^", ">", "=", "!", "<"]
 constants = {"pi": math.pi, "e": math.e, "-e": -math.e, "-pi": -math.pi}
-#ERROR_string = "ERROR"
 
 
 def checking_spaces(expression):
