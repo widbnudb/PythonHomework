@@ -1,5 +1,5 @@
 import unittest
-target = __import__("pycalc.pycalc")
+target = __import__("pycalc.pycalc.py")
 
 
 class TestWrongInput(unittest.TestCase):

@@ -19,7 +19,7 @@ math_operations = {"+": operator.add, "-": operator.sub, "/": operator.truediv, 
                    "//": operator.floordiv, "%": operator.mod, "^": operator.pow, "==": operator.eq, "!=": operator.ne,
                    "<": operator.lt, "<=": operator.le, ">=": operator.ge, ">": operator.gt}
 can_be_in_math_operations = ["+", "-", "/", "*", "%", "^", ">", "=", "!", "<"]
-constants = {"pi": math.pi, "e": math.e}
+constants = {"pi": math.pi, "e": math.e, "-e": -math.e, "-pi": -math.pi}
 
 
 def checking_spaces(expression):
@@ -70,14 +70,16 @@ def functions_evaluation(expression):
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
-                if expression[index + 1] in "0123456789." and (expression[index - 1] not in "+-"
-                                                               or not elements_of_expression):
+                if expression[index + 1] in "0123456789" and (expression[index - 1] not in "+-"
+                                                              or not elements_of_expression):
                     if operand:
                         elements_of_expression.append(operand)
                         operand = ''
                     number += elem
-                elif (expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(') and \
-                        expression[index - 1] not in "+-":
+                elif expression[index+1] == "e" or (expression[index+1] == "p" and expression[index+2] == "i"):
+                    function += elem
+                elif (expression[index + 1] in string.ascii_lowercase or expression[index + 1] == '(') \
+                        and expression[index - 1] not in "+-":
                     if operand:
                         elements_of_expression.append(operand)
                         operand = ''
