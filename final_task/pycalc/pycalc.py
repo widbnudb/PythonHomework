@@ -70,8 +70,8 @@ def functions_evaluation(expression):
                     if operand not in "+-":
                         elements_of_expression.append(operand)
                         operand = ''
-                if expression[index + 1] in "0123456789" and (expression[index - 1] not in "+-"
-                                                              or not elements_of_expression):
+                if expression[index + 1] in "0123456789." and (expression[index - 1] not in "+-"
+                                                               or not elements_of_expression):
                     if operand:
                         elements_of_expression.append(operand)
                         operand = ''
