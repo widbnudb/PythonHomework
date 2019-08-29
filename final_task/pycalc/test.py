@@ -1,7 +1,7 @@
 import unittest
-#from pycalc import pycalc
-import pycalc
+from pycalc import pycalc
 import math
+
 
 class TestWrongInput(unittest.TestCase):
     def test_comparison(self):
