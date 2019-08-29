@@ -280,11 +280,13 @@ def checking_input(expression):
 
 
 def main():
+    print(math.ldexp(11, 14))
     parser = argparse.ArgumentParser(description='Pure-python command-line calculator')
     parser.add_argument('EXPRESSION', type=str, help='expression string to evaluate')
     """write exception in this place!"""
     checking_input(parser.parse_args().EXPRESSION)
     print(functions_evaluation(parser.parse_args().EXPRESSION.replace(" ", "")))
+
 
 
 if __name__ == "__main__":
